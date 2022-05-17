@@ -10,8 +10,15 @@ interface UserDao {
     @Query("SELECT * FROM UserEntity WHERE username = :query")
     fun getUser(query: String): UserEntity
 
+    @Query("SELECT * FROM UserEntity WHERE username = :username")
+    fun checkRegisteredUsername(username: String): List<UserEntity>
+
+    @Query("SELECT * FROM UserEntity WHERE email = :email")
+    fun checkRegisteredEmail(email: String): List<UserEntity>
+
     @Query("SELECT EXISTS(SELECT * FROM UserEntity WHERE username = :username AND password = :password)")
     fun checkLogin(username: String, password: String): Boolean
+
 
     @Query("SELECT id FROM UserEntity WHERE username = :username")
     fun getId(username: String): Int?

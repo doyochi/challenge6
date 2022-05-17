@@ -11,11 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.database.UserApplication
-import id.hikmah.binar.challenge6.databinding.FragmentLoginBinding
+import id.hikmah.binar.challenge6.database.UserEntity
 import id.hikmah.binar.challenge6.databinding.FragmentRegisterBinding
-import id.hikmah.binar.challenge6.model.UserViewModel
-import id.hikmah.binar.challenge6.model.UserViewModelFactory
-import kotlinx.coroutines.CoroutineScope
+import id.hikmah.binar.challenge6.model.RegisterViewModel
+import id.hikmah.binar.challenge6.repo.UserRepo
+import id.hikmah.binar.challenge6.viewModelsFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -24,11 +24,14 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: UserViewModel by viewModels {
-        UserViewModelFactory(
-            (activity?.application as UserApplication).database.userDao()
-        )
-    }
+    private val userRepo: UserRepo by lazy { UserRepo(requireContext()) }
+    private val registerViewModel: RegisterViewModel by viewModelsFactory { RegisterViewModel(userRepo) }
+
+//    private val viewModel: RegisterViewModel by viewModels {
+//        UserViewModelFactory(
+//            (activity?.application as UserApplication).database.userDao()
+//        )
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +51,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        observeData()
         actionRegister()
 
     }
@@ -61,22 +64,11 @@ class RegisterFragment : Fragment() {
             val etPasswordb = binding.editPassword2.text.toString()
 
             if (validateRegisterInput(etUsername, etEmail, etPassworda, etPasswordb)) {
-                lifecycleScope.launch(Dispatchers.IO){
-                    inputRegister(etUsername, etEmail, etPassworda)
-                    activity?.runOnUiThread {
-                        Toast.makeText(requireContext(), "MASOK", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                    }
-                }
+                val user = UserEntity(null, etUsername,etEmail,etPassworda)
+                registerViewModel.addUserToDb(etUsername,etEmail,user)
             }
         }
 
-    }
-
-    private fun inputRegister(username: String, email: String, password: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.registerUser(username,email,password)
-        }
     }
 
     private fun validateRegisterInput(username: String, email: String, passworda: String, passwordb: String): Boolean {
@@ -108,5 +100,24 @@ class RegisterFragment : Fragment() {
         return true
     }
 
+    private fun observeData() {
+        registerViewModel.userIsRegist.observe(viewLifecycleOwner) {
+            binding.editUsername.error = "Username sudah dipakai"
+        }
 
+        registerViewModel.emailIsRegist.observe(viewLifecycleOwner) {
+            binding.editEmail.error = "Email sudah dipakai"
+        }
+
+        registerViewModel.isRegist.observe(viewLifecycleOwner) {
+            if (it == false) {
+                Toast.makeText(requireContext(), "Gagal Daftar", Toast.LENGTH_SHORT).show()
+            } else {
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                Toast.makeText(requireContext(), "Berhasil Daftar", Toast.LENGTH_SHORT).show()
+//                binding.editUsername.error = false
+//                binding.editEmail.error = false
+            }
+        }
+    }
 }

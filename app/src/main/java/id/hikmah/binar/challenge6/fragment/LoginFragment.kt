@@ -11,19 +11,18 @@ import androidx.navigation.fragment.findNavController
 import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.database.UserApplication
 import id.hikmah.binar.challenge6.databinding.FragmentLoginBinding
-import id.hikmah.binar.challenge6.model.UserViewModel
-import id.hikmah.binar.challenge6.model.UserViewModelFactory
+import id.hikmah.binar.challenge6.model.RegisterViewModel
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: UserViewModel by viewModels {
-        UserViewModelFactory(
-            (activity?.application as UserApplication).database.userDao()
-        )
-    }
+//    private val viewModel: RegisterViewModel by viewModels {
+//        UserViewModelFactory(
+//            (activity?.application as UserApplication).database.userDao()
+//        )
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +65,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun isLogin(username: String, password: String) {
-        viewModel.loginUser(username, password)
+//        viewModel.loginUser(username, password)
     }
 
     private fun validateLogin(username: String, password: String): Boolean {
