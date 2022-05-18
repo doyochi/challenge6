@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/HP/Documents/StudiIndependen_Android/chapter6/challenge6/app/src/main/res/layout/activity_auth.xml" value="0.1621376811594203" />
         <entry key="..\:/Users/HP/Documents/StudiIndependen_Android/chapter6/challenge6/app/src/main/res/layout/activity_main.xml" value="0.18385416666666668" />
+        <entry key="..\:/Users/HP/Documents/StudiIndependen_Android/chapter6/challenge6/app/src/main/res/layout/fragment_home.xml" value="0.1621376811594203" />
         <entry key="..\:/Users/HP/Documents/StudiIndependen_Android/chapter6/challenge6/app/src/main/res/layout/fragment_login.xml" value="0.16979166666666667" />
         <entry key="..\:/Users/HP/Documents/StudiIndependen_Android/chapter6/challenge6/app/src/main/res/layout/fragment_register.xml" value="0.16979166666666667" />
       </map>

@@ -102,19 +102,19 @@ class RegisterFragment : Fragment() {
 
     private fun observeData() {
         registerViewModel.userIsRegist.observe(viewLifecycleOwner) {
-            binding.editUsername.error = "Username sudah dipakai"
+            binding.editUsername.error = "Username sudah terdaftar"
         }
 
         registerViewModel.emailIsRegist.observe(viewLifecycleOwner) {
-            binding.editEmail.error = "Email sudah dipakai"
+            binding.editEmail.error = "Email sudah terdaftar"
         }
 
         registerViewModel.isRegist.observe(viewLifecycleOwner) {
             if (it == false) {
-                Toast.makeText(requireContext(), "Gagal Daftar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Pendaftaran Anda Gagal", Toast.LENGTH_SHORT).show()
             } else {
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                Toast.makeText(requireContext(), "Berhasil Daftar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Selamat bergabung", Toast.LENGTH_SHORT).show()
 //                binding.editUsername.error = false
 //                binding.editEmail.error = false
             }
