@@ -19,9 +19,16 @@ interface UserDao {
     @Query("SELECT EXISTS(SELECT * FROM UserEntity WHERE username = :username AND password = :password)")
     fun checkLogin(username: String, password: String): Boolean
 
+    //
+    @Query("SELECT * FROM UserEntity WHERE email = :email AND password = :password")
+    fun isLogin(email: String, password: String): List<UserEntity>
 
     @Query("SELECT id FROM UserEntity WHERE username = :username")
     fun getId(username: String): Int?
+
+    // Mendapatkan username berdasarkan email login
+    @Query("SELECT * FROM UserEntity WHERE email = :email")
+    fun getUsernameByEmail(email: String): UserEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: UserEntity): Long

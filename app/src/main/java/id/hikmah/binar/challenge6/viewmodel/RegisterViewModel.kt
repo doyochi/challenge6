@@ -1,13 +1,10 @@
-package id.hikmah.binar.challenge6.model
+package id.hikmah.binar.challenge6.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import id.hikmah.binar.challenge6.database.UserDao
 import id.hikmah.binar.challenge6.database.UserEntity
 import id.hikmah.binar.challenge6.repo.UserRepo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val userRepo: UserRepo): ViewModel() {

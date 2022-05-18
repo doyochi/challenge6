@@ -17,13 +17,13 @@ class UserRepo(context: Context) {
         userDB?.userDao()?.checkRegisteredEmail(email)
     }
 
-//    suspend fun checkRegisteredUser(email: String, password: String) = withContext(Dispatchers.IO) {
-//        userDB?.userDao()?.checkRegisteredUser(email, password)
-//    }
+    suspend fun isLogin(email: String, password: String) = withContext(Dispatchers.IO) {
+        userDB?.userDao()?.isLogin(email, password)
+    }
 //
-//    suspend fun getUsernameByMail(email: String) = withContext(Dispatchers.IO) {
-//        userDB?.userDao()?.getUsernameByEmail(email)
-//    }
+    suspend fun getUsernameByMail(email: String) = withContext(Dispatchers.IO) {
+        userDB?.userDao()?.getUsernameByEmail(email)
+    }
 //
 //    suspend fun getUserDetail(username: String) = withContext(Dispatchers.IO) {
 //        userDB?.userDao()?.getAllUserDetail(username)

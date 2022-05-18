@@ -6,18 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import id.hikmah.binar.challenge6.R
-import id.hikmah.binar.challenge6.database.UserApplication
 import id.hikmah.binar.challenge6.database.UserEntity
 import id.hikmah.binar.challenge6.databinding.FragmentRegisterBinding
-import id.hikmah.binar.challenge6.model.RegisterViewModel
+import id.hikmah.binar.challenge6.viewmodel.RegisterViewModel
 import id.hikmah.binar.challenge6.repo.UserRepo
 import id.hikmah.binar.challenge6.viewModelsFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment() {
 

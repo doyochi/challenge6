@@ -1,23 +1,32 @@
 package id.hikmah.binar.challenge6.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import id.hikmah.binar.challenge6.MainActivity
 import id.hikmah.binar.challenge6.R
-import id.hikmah.binar.challenge6.database.UserApplication
 import id.hikmah.binar.challenge6.databinding.FragmentLoginBinding
-import id.hikmah.binar.challenge6.model.RegisterViewModel
+import id.hikmah.binar.challenge6.viewmodel.DataStoreViewModel
+import id.hikmah.binar.challenge6.viewmodel.LoginViewModel
+import id.hikmah.binar.challenge6.repo.DataStoreRepo
+import id.hikmah.binar.challenge6.repo.UserRepo
+import id.hikmah.binar.challenge6.viewModelsFactory
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
+    private val userRepo: UserRepo by lazy { UserRepo(requireContext()) }
+    private val loginViewModel: LoginViewModel by viewModelsFactory { LoginViewModel(userRepo) }
+
+    private val pref: DataStoreRepo by lazy { DataStoreRepo(requireContext()) }
+    private val dataStoreViewModel: DataStoreViewModel by viewModelsFactory { DataStoreViewModel(pref) }
 //    private val viewModel: RegisterViewModel by viewModels {
 //        UserViewModelFactory(
 //            (activity?.application as UserApplication).database.userDao()
@@ -38,6 +47,7 @@ class LoginFragment : Fragment() {
 
         moveToRegister()
         actionLogin()
+        observeData()
     }
 
     override fun onDestroy() {
@@ -56,7 +66,8 @@ class LoginFragment : Fragment() {
             val username = binding.editUsername.text.toString()
             val password = binding.editPassword.text.toString()
             if (validateLogin(username, password)) {
-                isLogin(username, password)
+//                isLogin(username, password)
+                loginViewModel.loginUser(username, password)
                 Toast.makeText(requireContext(), "MLEBU", Toast.LENGTH_SHORT).show()
             }
 
@@ -81,4 +92,24 @@ class LoginFragment : Fragment() {
         return true
     }
 
+    private fun observeData() {
+        loginViewModel.statusLogin.observe(viewLifecycleOwner) {
+            if (it == false) { // jika gagal
+                Toast.makeText(requireContext(), "Email atau Password salah!", Toast.LENGTH_SHORT).show()
+            } else { // jika berhasil
+                // Simpan Login State ke Datastore
+                dataStoreViewModel.saveLoginState(it) // True
+                // Munculkan toast 'Berhasil Login'
+                Toast.makeText(requireContext(), "Berhasil Login", Toast.LENGTH_SHORT).show()
+                // Pindah screen ke HomeFragment (berada di MainActivity)
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                requireActivity().finish()
+            }
+        }
+
+        loginViewModel.username.observe(viewLifecycleOwner) {
+            dataStoreViewModel.saveUsername(it)
+        }
+
+    }
 }
