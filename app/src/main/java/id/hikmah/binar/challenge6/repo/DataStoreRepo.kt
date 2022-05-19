@@ -11,53 +11,46 @@ import kotlinx.coroutines.flow.map
 class DataStoreRepo (private val context: Context) {
 
     suspend fun saveLoginStateToDataStore(value: Boolean) {
-        context.dataStore.edit { pref ->
-            pref[LOGINSTATE_KEY] = value
+        context.dataStore.edit { pref -> pref[LOGINSTATE_KEY] = value
         }
     }
 
     fun readLoginStateFromDataStore(): Flow<Boolean> {
-        return context.dataStore.data.map { pref ->
-            pref[LOGINSTATE_KEY] ?: false
+        return context.dataStore.data.map { pref -> pref[LOGINSTATE_KEY] ?: false
         }
     }
 
     suspend fun saveUsernameToDataStore(value: String) {
-        context.dataStore.edit { pref ->
-            pref[USERNAME_KEY] = value
+        context.dataStore.edit { pref -> pref[USERNAME_KEY] = value
         }
     }
 
     fun readUsernameFromDataStore(): Flow<String> {
-        return context.dataStore.data.map { pref ->
-            pref[USERNAME_KEY] ?: "Binar"
+        return context.dataStore.data.map { pref -> pref[USERNAME_KEY] ?: "Default"
         }
     }
 
     suspend fun saveImageToDataStore(value: String) {
-        context.dataStore.edit { pref ->
-            pref[IMAGE_KEY] = value
+        context.dataStore.edit { pref -> pref[IMAGE_KEY] = value
         }
     }
 
     fun readImageFromDataStore() : Flow<String> {
-        return context.dataStore.data.map { pref ->
-            pref[IMAGE_KEY] ?: ""
+        return context.dataStore.data.map { pref -> pref[IMAGE_KEY] ?: ""
         }
     }
 
     suspend fun removeFromDataStore() {
-        context.dataStore.edit { pref ->
-            pref.clear()
+        context.dataStore.edit { pref -> pref.clear()
         }
     }
 
     companion object {
-        private const val DATA_STORE_NAME = "datastore_preference"
+        private const val DATA_STORE_USER = "datastore_preference"
         private val LOGINSTATE_KEY = booleanPreferencesKey("loginstate_key")
         private val USERNAME_KEY = stringPreferencesKey("username_key")
         private val IMAGE_KEY = stringPreferencesKey("image_key")
-        private val Context.dataStore by preferencesDataStore(name = DATA_STORE_NAME)
+        private val Context.dataStore by preferencesDataStore(name = DATA_STORE_USER)
     }
 
 

@@ -5,56 +5,105 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import id.hikmah.binar.challenge6.BuildConfig
 import id.hikmah.binar.challenge6.R
+import id.hikmah.binar.challenge6.adapter.TMDBAdapter
+import id.hikmah.binar.challenge6.databinding.FragmentHomeBinding
+import id.hikmah.binar.challenge6.repo.DataStoreRepo
+import id.hikmah.binar.challenge6.repo.MovieRepo
+import id.hikmah.binar.challenge6.service.TMDBApiService
+import id.hikmah.binar.challenge6.service.TMDBClient
+import id.hikmah.binar.challenge6.model.Result
+import id.hikmah.binar.challenge6.model.Status
+import id.hikmah.binar.challenge6.viewmodel.DataStoreViewModel
+import id.hikmah.binar.challenge6.viewmodel.MovieViewModel
+import id.hikmah.binar.challenge6.viewModelsFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var tmdbAdapter: TMDBAdapter
+
+    private val pref: DataStoreRepo by lazy { DataStoreRepo(requireContext()) }
+    private val dataStoreViewModel: DataStoreViewModel by viewModelsFactory{ DataStoreViewModel(pref) }
+
+    private val tmdbApiService: TMDBApiService by lazy { TMDBClient.instance }
+    private val movieRepo: MovieRepo by lazy { MovieRepo(tmdbApiService) }
+    private val movieViewModel: MovieViewModel by viewModelsFactory { MovieViewModel(movieRepo) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initRecyclerView()
+        moveToProfile()
+        showUsername()
+        observeMovie()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    private fun initRecyclerView() {
+        tmdbAdapter = TMDBAdapter { id_momovie,pilem: Result ->
+            val bundle = Bundle()
+            bundle.putInt("aidi_pilem", id_momovie)
+            findNavController().navigate(R.id.action_homeFragment_to_profilFragment, bundle)
+        }
+        binding.apply {
+            rvData.adapter = tmdbAdapter
+            rvData.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    private fun moveToProfile() {
+        binding.btnAccount.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_profilFragment)
+        }
+    }
+
+    private fun showUsername() {
+        dataStoreViewModel.getUsername().observe(viewLifecycleOwner) {
+            binding.txtWelcomeUser.text = "Welcome, $it"
+        }
+    }
+
+    private fun observeMovie() {
+        movieViewModel.getAllMoviePopular(BuildConfig.API_KEY).observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.LOADING -> {
+                    // Handle ketika data loading
+                    // progress bar muncul
+                    binding.pb.isVisible = true
+                }
+                Status.SUCCESS -> {
+                    // Handle ketika data success
+                    // progress bar ilang
+                    binding.pb.isVisible = false
+                    tmdbAdapter.updateDataRecycler(it.data)
+                }
+                Status.ERROR -> {
+                    // Handle ketika data error
+                    // progress bar ilang
+                    binding.pb.isVisible = false
+                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
     }
 }

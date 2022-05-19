@@ -18,7 +18,18 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL_TMDB", baseUrlTMDB
+            buildConfigField "String", "BASE_URL_IMAGE", baseUrlImage
+            buildConfigField "String", "BASE_URL_BACKDROP", baseUrlBackdrop
+            buildConfigField "String", "API_KEY", api_key
+        }
         release {
+            buildConfigField "String", "BASE_URL_TMDB", baseUrlTMDB
+            buildConfigField "String", "BASE_URL_IMAGE", baseUrlImage
+            buildConfigField "String", "BASE_URL_BACKDROP", baseUrlBackdrop
+            buildConfigField "String", "API_KEY", api_key
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -67,7 +78,16 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
     //Room Library
     implementation 'androidx.room:room-runtime:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
+
+    // Glide & Picasso
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 }
