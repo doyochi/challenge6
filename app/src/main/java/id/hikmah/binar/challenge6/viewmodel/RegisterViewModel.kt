@@ -34,8 +34,8 @@ class RegisterViewModel(private val userRepo: UserRepo): ViewModel() {
             } else {
                 result2 = true
             }
-
-            if (result1 && result2) { // Jika username & email tersedia
+// Jika username & email tersedia
+            if (result1 && result2) {
                 isRegist.value = true
                 // Jalankan query insert to db
                 userRepo.insertUser(user)

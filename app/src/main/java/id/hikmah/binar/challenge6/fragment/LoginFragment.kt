@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import id.hikmah.binar.challenge6.MainActivity
 import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.databinding.FragmentLoginBinding
@@ -17,13 +19,14 @@ import id.hikmah.binar.challenge6.repo.DataStoreRepo
 import id.hikmah.binar.challenge6.repo.UserRepo
 import id.hikmah.binar.challenge6.viewModelsFactory
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val userRepo: UserRepo by lazy { UserRepo(requireContext()) }
-    private val loginViewModel: LoginViewModel by viewModelsFactory { LoginViewModel(userRepo) }
+//    private val userRepo: UserRepo by lazy { UserRepo(requireContext()) }
+    private val loginViewModel: LoginViewModel by viewModels()
 
     private val pref: DataStoreRepo by lazy { DataStoreRepo(requireContext()) }
     private val dataStoreViewModel: DataStoreViewModel by viewModelsFactory { DataStoreViewModel(pref) }
@@ -94,14 +97,11 @@ class LoginFragment : Fragment() {
 
     private fun observeData() {
         loginViewModel.statusLogin.observe(viewLifecycleOwner) {
-            if (it == false) { // jika gagal
+            if (it == false) {
                 Toast.makeText(requireContext(), "Email atau Password salah!", Toast.LENGTH_SHORT).show()
-            } else { // jika berhasil
-                // Simpan Login State ke Datastore
-                dataStoreViewModel.saveLoginState(it) // True
-                // Munculkan toast 'Berhasil Login'
+            } else {
+                dataStoreViewModel.saveLoginState(it)
                 Toast.makeText(requireContext(), "Berhasil Login", Toast.LENGTH_SHORT).show()
-                // Pindah screen ke HomeFragment (berada di MainActivity)
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 requireActivity().finish()
             }

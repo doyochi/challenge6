@@ -55,14 +55,14 @@ class HomeFragment : Fragment() {
         observeMovie()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     private fun initRecyclerView() {
-        tmdbAdapter = TMDBAdapter { id_momovie,pilem: Result ->
+        tmdbAdapter = TMDBAdapter { id_movies,movies: Result ->
             val bundle = Bundle()
-            bundle.putInt("aidi_pilem", id_momovie)
+            bundle.putInt("id _film", id_movies)
             findNavController().navigate(R.id.action_homeFragment_to_profilFragment, bundle)
         }
         binding.apply {

@@ -11,7 +11,7 @@ interface UserDao {
     fun getUser(query: String): UserEntity
 
     @Query("SELECT * FROM UserEntity WHERE username = :username")
-    fun checkRegisteredUsername(username: String): List<UserEntity>
+    suspend fun checkRegisteredUsername(username: String): List<UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE email = :email")
     fun checkRegisteredEmail(email: String): List<UserEntity>
@@ -21,14 +21,14 @@ interface UserDao {
 
     //
     @Query("SELECT * FROM UserEntity WHERE email = :email AND password = :password")
-    fun isLogin(email: String, password: String): List<UserEntity>
+    suspend fun isLogin(email: String, password: String): List<UserEntity>
 
     @Query("SELECT id FROM UserEntity WHERE username = :username")
     fun getId(username: String): Int?
 
     // Mendapatkan username berdasarkan email login
     @Query("SELECT * FROM UserEntity WHERE email = :email")
-    fun getUsernameByEmail(email: String): UserEntity
+    suspend fun getUsernameByEmail(email: String): UserEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: UserEntity): Long

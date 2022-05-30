@@ -3,10 +3,13 @@ package id.hikmah.binar.challenge6.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import id.hikmah.binar.challenge6.repo.UserRepo
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(private val userRepo: UserRepo): ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val userRepo: UserRepo): ViewModel() {
 
     val statusLogin = MutableLiveData<Boolean>()
     val username = MutableLiveData<String>()
@@ -18,14 +21,13 @@ class LoginViewModel(private val userRepo: UserRepo): ViewModel() {
         viewModelScope.launch {
             val checkUser = userRepo.isLogin(email, password)
 
-            // Jika email dan password ditemukan pada db
             if (!checkUser.isNullOrEmpty()) {
-                // Mendapatkan data user dari inputan login
+
                 val getUser = userRepo.getUsernameByMail(email)
-                username.value = getUser?.username
-                userid.value = getUser?.id!!
-                useremail.value = getUser.email!!
-                pass.value = getUser.password!!
+                username.value = getUser.username
+                userid.value = getUser.id!!
+                useremail.value = getUser.email
+                pass.value = getUser.password
                 // Login State = True
                 statusLogin.value = true
             } else {
