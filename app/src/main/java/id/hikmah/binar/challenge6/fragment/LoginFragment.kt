@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import id.hikmah.binar.challenge6.MainActivity
 import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.databinding.FragmentLoginBinding

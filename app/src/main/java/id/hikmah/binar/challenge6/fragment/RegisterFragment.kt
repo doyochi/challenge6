@@ -6,21 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.database.UserEntity
 import id.hikmah.binar.challenge6.databinding.FragmentRegisterBinding
+import id.hikmah.binar.challenge6.repo.DataStoreRepo
 import id.hikmah.binar.challenge6.viewmodel.RegisterViewModel
 import id.hikmah.binar.challenge6.repo.UserRepo
 import id.hikmah.binar.challenge6.viewModelsFactory
+import id.hikmah.binar.challenge6.viewmodel.DataStoreViewModel
 
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    private val userRepo: UserRepo by lazy { UserRepo(requireContext()) }
-    private val registerViewModel: RegisterViewModel by viewModelsFactory { RegisterViewModel(userRepo) }
+//    private val userRepo: UserRepo by lazy { UserRepo(requireContext()) }
+    private val registerViewModel: RegisterViewModel by viewModels()
+
+    private val pref: DataStoreRepo by lazy { DataStoreRepo(requireContext()) }
+    private val dataStoreViewModel: DataStoreViewModel by viewModelsFactory { DataStoreViewModel(pref) }
 
 //    private val viewModel: RegisterViewModel by viewModels {
 //        UserViewModelFactory(
