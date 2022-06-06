@@ -1,6 +1,7 @@
 package id.hikmah.binar.challenge6.repo
 
 import android.content.Context
+import id.hikmah.binar.challenge6.database.ProfilEntity
 import id.hikmah.binar.challenge6.database.UserDao
 import id.hikmah.binar.challenge6.database.UserDatabase
 import id.hikmah.binar.challenge6.database.UserEntity
@@ -26,22 +27,22 @@ class UserRepo @Inject constructor(private val userDao: UserDao) {
         return userDao.getUsernameByEmail(email)
     }
 //
-//    suspend fun getUserDetail(username: String) {
-//        userDao.getAllUserDetail(username)
-//    }
+    suspend fun getUserDetail(username: String): List<ProfilEntity> {
+        return userDao.getAllUserDetail(username)
+    }
 //
-//    suspend fun getAUser(username: String) {
-//        userDao.getAUserDetail(username)
-//    }
+    suspend fun getAUser(username: String): ProfilEntity {
+        return userDao.getAUserDetail(username)
+    }
 //
-//    suspend fun insertUserDetail(userDetail: UserDetail){
-//        userDao.insertUserDetail(userDetail)
-//    }
-//
-//    suspend fun updateUserProfile(username: String, nama_lengkap: String, tgl_lahir: String, alamat: String) = withContext(
-//        Dispatchers.IO) {
-//        userDao.updateUserDetail(username, nama_lengkap, tgl_lahir, alamat)
-//    }
+    suspend fun insertUserDetail(profilEntity: ProfilEntity){
+        userDao.insertUserDetail(profilEntity)
+    }
+
+    suspend fun updateUserProfile(username: String, nama_lengkap: String, tgl_lahir: String, alamat: String) = withContext(
+        Dispatchers.IO) {
+        userDao.updateUserDetail(username, nama_lengkap, tgl_lahir, alamat)
+    }
 //
     suspend fun insertUser(user: UserEntity){
         userDao.insertUser(user)

@@ -67,7 +67,7 @@ class LoginFragment : Fragment() {
 
     private fun actionLogin() {
         binding.btnLogin.setOnClickListener {
-            val username = binding.editUsername.text.toString()
+            val username = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
             if (validateLogin(username, password)) {
 //                isLogin(username, password)
@@ -79,13 +79,13 @@ class LoginFragment : Fragment() {
 
     }
 
-    private fun isLogin(username: String, password: String) {
+//    private fun isLogin(username: String, password: String) {
 //        viewModel.loginUser(username, password)
-    }
+//    }
 
     private fun validateLogin(username: String, password: String): Boolean {
         if (username.isEmpty()) {
-            binding.editUsername.error = "Masukkan username Anda"
+            binding.editEmail.error = "Masukkan username Anda"
             return false
         }
 

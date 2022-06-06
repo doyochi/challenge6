@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import id.hikmah.binar.challenge6.BuildConfig
 import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.adapter.TMDBAdapter
@@ -23,6 +25,7 @@ import id.hikmah.binar.challenge6.viewmodel.DataStoreViewModel
 import id.hikmah.binar.challenge6.viewmodel.MovieViewModel
 import id.hikmah.binar.challenge6.viewModelsFactory
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null

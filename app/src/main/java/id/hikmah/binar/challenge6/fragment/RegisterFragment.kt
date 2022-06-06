@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.database.UserEntity
 import id.hikmah.binar.challenge6.databinding.FragmentRegisterBinding
@@ -17,6 +18,7 @@ import id.hikmah.binar.challenge6.repo.UserRepo
 import id.hikmah.binar.challenge6.viewModelsFactory
 import id.hikmah.binar.challenge6.viewmodel.DataStoreViewModel
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null

@@ -3,11 +3,14 @@ package id.hikmah.binar.challenge6.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import id.hikmah.binar.challenge6.database.UserEntity
 import id.hikmah.binar.challenge6.repo.UserRepo
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterViewModel(private val userRepo: UserRepo): ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor(private val userRepo: UserRepo): ViewModel() {
 
     val isRegist = MutableLiveData<Boolean>()
     val emailIsRegist = MutableLiveData<Boolean>()
