@@ -10,10 +10,6 @@ object TMDBClient {
 
     private const val BASE_URL = BuildConfig.BASE_URL_TMDB
 
-
-    /**
-     * untuk interceptor di level body
-     */
     private val logging : HttpLoggingInterceptor
         get() {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -22,12 +18,10 @@ object TMDBClient {
             }
         }
 
-    // Crate client untuk retrofit
     private val client = OkHttpClient.Builder()
         .addInterceptor(logging)
         .build()
 
-    // create instance ApiService pakai lazy supaya sekali bikin dan seterusnya bakal manggil dari memory (yang udah pernah di bikin)
     val instance : TMDBApiService by lazy {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

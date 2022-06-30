@@ -28,11 +28,10 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var tmdbAdapter: TMDBAdapter
-
     private val pref: DataStoreRepo by lazy { DataStoreRepo(requireContext()) }
     private val dataStoreViewModel: DataStoreViewModel by viewModelsFactory{ DataStoreViewModel(pref) }
 
+    private lateinit var tmdbAdapter: TMDBAdapter
     private val tmdbApiService: TMDBApiService by lazy { TMDBClient.instance }
     private val movieRepo: MovieRepo by lazy { MovieRepo(tmdbApiService) }
     private val movieViewModel: MovieViewModel by viewModelsFactory { MovieViewModel(movieRepo) }
@@ -49,32 +48,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerView()
-        moveToProfile()
         showUsername()
+        initRecyclerView()
         observeMovie()
+        moveToProfil()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-    }
-
-    private fun initRecyclerView() {
-        tmdbAdapter = TMDBAdapter { id_momovie,pilem: Result ->
-            val bundle = Bundle()
-            bundle.putInt("aidi_pilem", id_momovie)
-            findNavController().navigate(R.id.action_homeFragment_to_detailMovieFragment, bundle)
-        }
-        binding.apply {
-            rvData.adapter = tmdbAdapter
-            rvData.layoutManager = LinearLayoutManager(requireContext())
-        }
-    }
-
-    private fun moveToProfile() {
-        binding.btnAccount.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_profilFragment)
-        }
     }
 
     private fun showUsername() {
@@ -83,27 +64,38 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun initRecyclerView() {
+        tmdbAdapter = TMDBAdapter { id_mov,pilem: Result ->
+            val bundle = Bundle()
+            bundle.putInt("movi_id", id_mov)
+            findNavController().navigate(R.id.action_homeFragment_to_detailMovieFragment, bundle)
+        }
+        binding.apply {
+            rvData.adapter = tmdbAdapter
+            rvData.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
     private fun observeMovie() {
         movieViewModel.getAllMoviePopular(BuildConfig.API_KEY).observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.LOADING -> {
-                    // Handle ketika data loading
-                    // progress bar muncul
-                    binding.pb.isVisible = true
-                }
+                Status.LOADING -> { binding.pb.isVisible = true }
                 Status.SUCCESS -> {
-                    // Handle ketika data success
-                    // progress bar ilang
                     binding.pb.isVisible = false
                     tmdbAdapter.updateDataRecycler(it.data)
                 }
                 Status.ERROR -> {
-                    // Handle ketika data error
-                    // progress bar ilang
                     binding.pb.isVisible = false
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        "Error", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun moveToProfil() {
+        binding.btnAccount.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_profilFragment)
         }
     }
 }

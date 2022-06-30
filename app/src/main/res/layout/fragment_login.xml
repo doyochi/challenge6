@@ -37,10 +37,10 @@
             app:boxCornerRadiusTopStart="10dp">
 
             <EditText
-                android:id="@+id/edit_username"
+                android:id="@+id/email_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
+                android:hint="Email"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 

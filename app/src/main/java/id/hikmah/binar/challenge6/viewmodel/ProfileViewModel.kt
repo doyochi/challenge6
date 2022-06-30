@@ -21,7 +21,6 @@ class ProfileViewModel(private val userRepo: UserRepo): ViewModel() {
             val userDetail = userRepo.getAUser(username)
 
             if (!result.isNullOrEmpty()) {
-                // Munculkan value dari tabel UserDetail ke EditText via MutableLiveData
                 usernameDetail.value = userDetail?.username!!
                 namaLengkapDetail.value = userDetail.nama_lengkap!!
                 tglLahirDetail.value = userDetail.tgl_lahir!!

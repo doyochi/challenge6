@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import id.hikmah.binar.challenge6.BuildConfig
-import id.hikmah.binar.challenge6.R
 import id.hikmah.binar.challenge6.databinding.FragmentDetailMovieBinding
 import id.hikmah.binar.challenge6.model.Status
 import id.hikmah.binar.challenge6.repo.MovieRepo
@@ -43,21 +42,15 @@ class DetailMovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val getPilemIDFromBandel = arguments?.getInt("aidi_pilem")
-        observeDetailMovie(getPilemIDFromBandel!!)
+        val getMovIdBundle = arguments?.getInt("movi_id")
+        observeDetailMovie(getMovIdBundle!!)
     }
 
     private fun observeDetailMovie(movieId: Int) {
         movieViewModel.getMovieDetail(movieId, BuildConfig.API_KEY).observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.LOADING -> {
-                    // Handle ketika data loading
-                    // progress bar muncul
-                    binding.pb.isVisible = true
-                }
+                Status.LOADING -> {binding.pb.isVisible = true}
                 Status.SUCCESS -> {
-                    // Handle ketika data success
-                    // progress bar ilang
                     binding.pb.isVisible = false
                     binding.apply {
                         Glide.with(requireContext())
@@ -72,10 +65,8 @@ class DetailMovieFragment : Fragment() {
                     }
                 }
                 Status.ERROR -> {
-                    // Handle ketika data error
-                    // progress bar ilang
                     binding.pb.isVisible = false
-                    Toast.makeText(requireContext(), "Error Guys", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Gagal Memuat Data", Toast.LENGTH_SHORT).show()
                 }
             }
         }

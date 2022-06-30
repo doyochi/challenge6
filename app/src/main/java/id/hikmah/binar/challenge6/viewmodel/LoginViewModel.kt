@@ -18,15 +18,12 @@ class LoginViewModel(private val userRepo: UserRepo): ViewModel() {
         viewModelScope.launch {
             val checkUser = userRepo.isLogin(email, password)
 
-            // Jika email dan password ditemukan pada db
             if (!checkUser.isNullOrEmpty()) {
-                // Mendapatkan data user dari inputan login
                 val getUser = userRepo.getUsernameByMail(email)
                 username.value = getUser?.username
                 userid.value = getUser?.id!!
                 useremail.value = getUser.email!!
                 pass.value = getUser.password!!
-                // Login State = True
                 statusLogin.value = true
             } else {
                 statusLogin.value = false

@@ -17,7 +17,7 @@ abstract class UserDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     UserDatabase::class.java,
-                    "user_database.db"
+                    "user.db"
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance

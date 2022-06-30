@@ -45,14 +45,33 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        moveToRegister()
-        actionLogin()
         observeData()
+        actionLogin()
+        moveToRegister()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun observeData() {
+        loginViewModel.statusLogin.observe(viewLifecycleOwner) {
+            if (it == false) {Toast.makeText(requireContext(),
+                "Email atau Password salah!", Toast.LENGTH_SHORT).show()
+            } else {
+                dataStoreViewModel.saveLoginState(it)
+                Toast.makeText(requireContext(), "Berhasil Login", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }
+        }
+
+        loginViewModel.username.observe(viewLifecycleOwner) {
+            dataStoreViewModel.saveUsername(it)
+        }
+
     }
 
     private fun moveToRegister() {
@@ -63,11 +82,11 @@ class LoginFragment : Fragment() {
 
     private fun actionLogin() {
         binding.btnLogin.setOnClickListener {
-            val username = binding.editUsername.text.toString()
+            val email = binding.emailEdit.text.toString()
             val password = binding.editPassword.text.toString()
-            if (validateLogin(username, password)) {
+            if (validateLogin(email, password)) {
 //                isLogin(username, password)
-                loginViewModel.loginUser(username, password)
+                loginViewModel.loginUser(email, password)
                 Toast.makeText(requireContext(), "MLEBU", Toast.LENGTH_SHORT).show()
             }
 
@@ -79,9 +98,9 @@ class LoginFragment : Fragment() {
 //        viewModel.loginUser(username, password)
     }
 
-    private fun validateLogin(username: String, password: String): Boolean {
-        if (username.isEmpty()) {
-            binding.editUsername.error = "Masukkan username Anda"
+    private fun validateLogin(email: String, password: String): Boolean {
+        if (email.isEmpty()) {
+            binding.emailEdit.error = "Masukkan username Anda"
             return false
         }
 
@@ -90,26 +109,5 @@ class LoginFragment : Fragment() {
             return false
         }
         return true
-    }
-
-    private fun observeData() {
-        loginViewModel.statusLogin.observe(viewLifecycleOwner) {
-            if (it == false) { // jika gagal
-                Toast.makeText(requireContext(), "Email atau Password salah!", Toast.LENGTH_SHORT).show()
-            } else { // jika berhasil
-                // Simpan Login State ke Datastore
-                dataStoreViewModel.saveLoginState(it) // True
-                // Munculkan toast 'Berhasil Login'
-                Toast.makeText(requireContext(), "Berhasil Login", Toast.LENGTH_SHORT).show()
-                // Pindah screen ke HomeFragment (berada di MainActivity)
-                startActivity(Intent(requireContext(), MainActivity::class.java))
-                requireActivity().finish()
-            }
-        }
-
-        loginViewModel.username.observe(viewLifecycleOwner) {
-            dataStoreViewModel.saveUsername(it)
-        }
-
     }
 }

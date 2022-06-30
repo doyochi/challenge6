@@ -18,26 +18,23 @@ class RegisterViewModel(private val userRepo: UserRepo): ViewModel() {
         var result2 = false
 
         viewModelScope.launch {
-
-            // Query check username & email
             val checkUsername = userRepo.checkRegisteredkUsername(username)
             val checkEmail = userRepo.checkRegisteredEmail(email)
 
-            if (!checkUsername.isNullOrEmpty()) { // jika ditemukan username sudah dipakai
+            if (!checkUsername.isNullOrEmpty()) {
                 userIsRegist.value = true
             } else {
                 result1 = true
             }
 
-            if (!checkEmail.isNullOrEmpty()) { // jika ditemukan email sudah dipakai
+            if (!checkEmail.isNullOrEmpty()) {
                 emailIsRegist.value = true
             } else {
                 result2 = true
             }
 
-            if (result1 && result2) { // Jika username & email tersedia
+            if (result1 && result2) {
                 isRegist.value = true
-                // Jalankan query insert to db
                 userRepo.insertUser(user)
             } else {
                 isRegist.value = false

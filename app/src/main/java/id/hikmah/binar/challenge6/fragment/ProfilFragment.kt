@@ -61,19 +61,12 @@ class ProfilFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        doLogout()
+
         getUserDetail()
         updateUserDetail()
         observeData()
         setImageProfile()
-    }
-
-    private fun doLogout() {
-        binding.btnLogout.setOnClickListener {
-            datastoreViewModel.deleteAllData()
-            startActivity(Intent(requireContext(), LoginRegActivity::class.java))
-            requireActivity().finish()
-        }
+        doLogout()
     }
 
     private fun getUserDetail() {
@@ -84,7 +77,6 @@ class ProfilFragment : Fragment() {
 
     private fun updateUserDetail() {
         binding.btnUpdate.setOnClickListener {
-            // Get value dari EditText
             val etUsername = binding.editUsername.text.toString()
             val etNamaLengkap = binding.editNamalengkap.text.toString()
             val etTglLahir = binding.editTglLahir.text.toString()
@@ -111,9 +103,11 @@ class ProfilFragment : Fragment() {
 
         profileViewModel.statusUpdate.observe(viewLifecycleOwner) {
             if (it == false) {
-                Toast.makeText(requireContext(), "Gagal Update", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    "Gagal Update", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Berhasil Update", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    "Berhasil Update", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -146,14 +140,13 @@ class ProfilFragment : Fragment() {
     }
 
     private fun checkingPermission() {
-        // apakah permission sudah di setujui atau belum
         if (isGranted(
                 requireActivity(),
                 Manifest.permission.CAMERA,
                 arrayOf(
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 ),
                 REQUEST_CODE_PERMISSION,
             )
@@ -170,11 +163,9 @@ class ProfilFragment : Fragment() {
     ): Boolean {
         val permissionCheck = ActivityCompat.checkSelfPermission(activity, permission)
         return if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            // klau udah di tolak sebelumnya
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 showPermissionDeniedDialog()
             }
-            // klau belum pernah di tolak (request pertama kali)
             else {
                 ActivityCompat.requestPermissions(activity, permissions, request)
             }
@@ -184,15 +175,13 @@ class ProfilFragment : Fragment() {
         }
     }
 
-    // dialoag yg muncul kalau user menolak permission yg di butuhkan
     private fun showPermissionDeniedDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Permission Denied")
-            .setMessage("Permission is denied, Please allow permissions from App Settings.")
+            .setTitle("Akses Ditolak")
+            .setMessage("Akses ditolak, mohon ubah perizinan akses melalui Settings.")
             .setPositiveButton(
                 "App Settings"
             ) { _, _ ->
-                // mengarahkan user untuk buka halaman setting
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 val uri = Uri.fromParts("package", requireActivity().packageName, null)
@@ -205,47 +194,38 @@ class ProfilFragment : Fragment() {
 
     private fun chooseImageDialog() {
         AlertDialog.Builder(requireContext())
-            .setMessage("Pilih Gambar")
-            .setPositiveButton("Gallery") { _, _ -> openGallery() }
-            .setNegativeButton("Camera") { _, _ -> openCamera() }
+            .setMessage("Upload Gambar")
+            .setPositiveButton("Camera") { _, _ -> openCamera() }
+            .setNegativeButton("Gallery") { _, _ -> openGallery() }
             .show()
     }
 
-    // buat buka gallery
     private fun openGallery() {
         requireActivity().intent.type = "image/*"
         galleryResult.launch("image/*")
     }
 
-    // buat dapetin URI image gallery
     private val galleryResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
-            // simpan uri ke dlm data store
             var uriString = result.toString()
             uriString = "1_$uriString"
             datastoreViewModel.saveImage(uriString)
-            // munculin image dari gallery ke ImageView
             binding.imgProfil.setImageURI(result)
         }
 
-    // buat open camera
     private fun openCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraResult.launch(cameraIntent)
     }
 
-    // buat dapetin bitmap image dari camera
     private val cameraResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                // dapetin data bitmap dari intent
                 val bitmap = result.data!!.extras?.get("data") as Bitmap
 
-                // simpan bitmap ke dlm data store
                 var bitmapString = bitMapToString(bitmap)
                 bitmapString = "2_$bitmapString"
                 datastoreViewModel.saveImage(bitmapString)
-                // load bitmap ke dalam imageView
                 binding.imgProfil.setImageBitmap(bitmap)
             }
         }
@@ -265,6 +245,15 @@ class ProfilFragment : Fragment() {
         } catch (e: Exception) {
             e.message
             null
+        }
+    }
+
+    private fun doLogout() {
+        binding.btnLogout.setOnClickListener {
+            datastoreViewModel.deleteAllData()
+            val intent = Intent(requireContext(), LoginRegActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
         }
     }
 }

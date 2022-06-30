@@ -13,7 +13,7 @@ class MovieViewModel(private val movieRepo: MovieRepo): ViewModel() {
         try {
             emit(Resource.success(movieRepo.getMovie(apiKey)))
         } catch (e: Exception) {
-            emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = e.message ?: "Error!"))
         }
     }
 
@@ -22,7 +22,7 @@ class MovieViewModel(private val movieRepo: MovieRepo): ViewModel() {
         try {
             emit(Resource.success(movieRepo.getMovieDetail(movieId, apiKey)))
         } catch (e: Exception) {
-            emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = e.message ?: "Error!"))
         }
     }
 }
