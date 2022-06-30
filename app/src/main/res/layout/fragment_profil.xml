@@ -3,12 +3,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ProfilFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="halo ini profil" />
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Profil"
+            android:textSize="25sp"
+            android:textAlignment="center"/>
+        <ImageView
+            android:id="@+id/img_profil"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_profil"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_namalengkap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nama Lengkap"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_tgl_lahir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tanggal Lahir (DD/MM/YYY)"
+                    android:inputType="text|date" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_alamat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Alamat"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="50dp"
+            android:text="Update"
+            android:backgroundTint="@color/purple"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Logout"
+            android:backgroundTint="@color/purple"
+            android:textAllCaps="false"/>
+    </LinearLayout>
 
 </FrameLayout>

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profilFragment"
             app:destination="@id/profilFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
     </fragment>
     <fragment
         android:id="@+id/profilFragment"
@@ -40,5 +43,14 @@
         <action
             android:id="@+id/action_registerFragment2_to_loginFragment2"
             app:destination="@id/loginFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailMovieFragment"
+        android:name="id.hikmah.binar.challenge6.fragment.DetailMovieFragment"
+        android:label="fragment_detail_movie"
+        tools:layout="@layout/fragment_detail_movie" >
+        <action
+            android:id="@+id/action_detailMovieFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

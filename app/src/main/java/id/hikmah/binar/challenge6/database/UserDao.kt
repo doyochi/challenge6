@@ -33,6 +33,23 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: UserEntity): Long
 
+    // Mendapatkan UserDetail
+    @Query("SELECT * FROM ProfilEntity WHERE username = :username")
+    fun getAllUserDetail(username: String): List<ProfilEntity>
+
+    // Mendapatkan salah satu UserDetail
+    @Query("SELECT * FROM ProfilEntity WHERE username = :username")
+    fun getAUserDetail(username: String): ProfilEntity
+
+    // Insert UserDetail
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUserDetail(userDetail: ProfilEntity): Long
+
+    // Update userdetail yang sudah ada berdasarkan ...
+    @Query("UPDATE ProfilEntity SET nama_lengkap = :nama_lengkap, tgl_lahir = :tgl_lahir, alamat = :alamat WHERE username = :username")
+    fun updateUserDetail(username: String, nama_lengkap: String, tgl_lahir: String, alamat: String): Int
+
+
     @Update
     fun updateUser(user: UserEntity): Int
 

@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
         tmdbAdapter = TMDBAdapter { id_momovie,pilem: Result ->
             val bundle = Bundle()
             bundle.putInt("aidi_pilem", id_momovie)
-            findNavController().navigate(R.id.action_homeFragment_to_profilFragment, bundle)
+            findNavController().navigate(R.id.action_homeFragment_to_detailMovieFragment, bundle)
         }
         binding.apply {
             rvData.adapter = tmdbAdapter
