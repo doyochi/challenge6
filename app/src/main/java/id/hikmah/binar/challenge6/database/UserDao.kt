@@ -22,6 +22,7 @@ interface UserDao {
     @Query("SELECT * FROM UserEntity WHERE email = :email AND password = :password")
     fun isLogin(email: String, password: String): List<UserEntity>
 
+
     @Query("SELECT id FROM UserEntity WHERE username = :username")
     fun getId(username: String): Int?
 

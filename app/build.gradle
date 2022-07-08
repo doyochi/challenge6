@@ -23,6 +23,15 @@ android {
             buildConfigField "String", "BASE_URL_IMAGE", baseUrlImage
             buildConfigField "String", "BASE_URL_BACKDROP", baseUrlBackdrop
             buildConfigField "String", "API_KEY", api_key
+
+            minifyEnabled false
+            debuggable true
+            applicationIdSuffix ".debug"
+        }
+        qa {
+            minifyEnabled true
+            debuggable false
+            applicationIdSuffix ".qa"
         }
         release {
             buildConfigField "String", "BASE_URL_TMDB", baseUrlTMDB
@@ -30,8 +39,23 @@ android {
             buildConfigField "String", "BASE_URL_BACKDROP", baseUrlBackdrop
             buildConfigField "String", "API_KEY", api_key
 
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
+            applicationIdSuffix ".release"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "version"
+    productFlavors{
+        demo {
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        pro {
+            dimension "version"
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
         }
     }
     compileOptions {
@@ -90,4 +114,9 @@ dependencies {
     // Glide & Picasso
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //Dagger hilt
+    implementation "com.google.dagger:hilt-android:2.28-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+
 }
