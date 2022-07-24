@@ -10,6 +10,8 @@ import id.hikmah.binar.challenge6.BuildConfig
 import id.hikmah.binar.challenge6.databinding.ItemDataBinding
 import id.hikmah.binar.challenge6.model.MovieResponse
 import id.hikmah.binar.challenge6.model.Result
+import id.hikmah.binar.challenge6.service.TMDBApiService
+import okhttp3.Interceptor.Companion.invoke
 
 class TMDBAdapter(private val onClickListers: (id: Int, movie: Result) -> Unit):
     RecyclerView.Adapter<TMDBAdapter.TMDBViewHolder>(){
